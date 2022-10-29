@@ -1,0 +1,7 @@
+---
+
+#Infra related
+region: eu-central
+image: linode/debian11
+resource_prefix: ceph
+ods_volume_size: 10
