@@ -1,0 +1,13 @@
+- name: Generate an OpenSSH keypair
+  community.crypto.openssh_keypair:
+    path: "{{ ssh_key_output_path }}"
+  register: key_pair
+
+- ansible.builtin.include_tasks: instances.yml
+- ansible.builtin.include_tasks: volume.yml
+
+- name: Add instance to inventory
+  ansible.builtin.add_host:
+    name: "{{ ceph_osd_create.instance.ipv4[0] }}"
+    groups: hosts_ceph
+    var_vol_mountpoint: "{{ volume_create.volume.filesystem_path }}"
