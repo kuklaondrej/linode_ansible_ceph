@@ -1,16 +1,34 @@
 - name: Create a Linode for osd
   linode.cloud.instance:
-    label: "{{ resource_prefix }}-osd"
+    label: "{{ resource_prefix }}-osd-{{ item }}"
     type: g6-standard-2
     region: "{{ region }}"
     image: "{{ image }}"
     private_ip: true
+    tags: ceph
     authorized_keys:
       - "{{ key_pair.public_key }}"
+
     wait: false
     state: present
-  register: ceph_osd_create
+
+  async: 120
+  poll: 0
+  changed_when: false
+  loop: "{{ range(0, number_of_osds) | list }}"
+  register: instance_job
+
+
+- name: Wait for all instances to be created
+  ansible.builtin.async_status:
+    jid: "{{ async_result_item.ansible_job_id }}"
+  loop: "{{ instance_job.results }}"
+  loop_control:
+    loop_var: "async_result_item"
+  register: instance_create
+  until: instance_create.finished
+  retries: 30
 
 - name: Wait for SSH
-  wait_for: host="{{ item.instance.ipv4[0] }}" port=22 timeout=300
-  with_items: "{{ ceph_osd_create }}"
+  ansible.builtin.wait_for: host="{{ item.instance.ipv4[0] }}" port=22 timeout=300
+  with_items: "{{ instance_create.results }}"
