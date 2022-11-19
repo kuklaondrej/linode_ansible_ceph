@@ -1,8 +1,9 @@
 - name: Create and attach a volume to the osd
   linode.cloud.volume:
-    label: "{{ resource_prefix }}-osd-vol"
+    label: "{{ item.instance.label }}-vol"
     region: "{{ region }}"
     size: "{{ ods_volume_size }}"
-    linode_id: "{{ ceph_osd_create.instance.id }}"
+    linode_id: "{{ item.instance.id }}"
     state: present
   register: volume_create
+  loop: "{{ instance_create.results }}"
