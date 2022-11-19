@@ -4,4 +4,8 @@
 region: eu-central
 image: linode/debian11
 resource_prefix: ceph
-ods_volume_size: 10
+ods_volume_size: 20
+ssh_key_output_path: ./ssh_key
+
+number_of_disks_per_ods: 3
+number_of_osds: 3
