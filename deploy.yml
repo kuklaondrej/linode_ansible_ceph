@@ -1,7 +1,7 @@
 ---
 - name: Deploy Ceph infra
   hosts: localhost
-  gather_facts: yes
+  gather_facts: true
 
   vars_files:
     - config.yml
@@ -11,3 +11,4 @@
 
   roles:
     - role: infra
+    - role: installation
