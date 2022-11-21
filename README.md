@@ -2,6 +2,8 @@
 
 Ansible colection to deploy Ceph on Linode using Linode and Block Storage.
 
+:warning: **REPO isn't finished**
+
 ## Usage
 
 In order to run this playbook, you must create a Linode [Personal Access Token](https://www.linode.com/docs/guides/getting-started-with-the-linode-api/#get-an-access-token).
@@ -29,3 +31,9 @@ This will execute the playbook, including provisioning the necessary infrastruct
     - `tasks`
       - `main.yml` - The entrypoint for this role.
       - `mount_volume.yml` - Mounts and formats the attached volume.
+
+## TODO
+
+- [x] Infrastructure deployment
+- [ ] Connect with Ceph Ansible
+- [ ] Proper config
